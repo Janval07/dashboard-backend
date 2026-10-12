@@ -1,0 +1,16 @@
+services:
+  dashboard-backend:
+    build: .
+    container_name: dashboard-backend
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      KEYCLOAK_URL: http://localhost:8081
+      KEYCLOAK_JWKS_URL: http://host.docker.internal:8081
+      KEYCLOAK_REALM: cybersecurity
+      KEYCLOAK_CLIENT_ID: fastapi-api
+    ports:
+      - "8001:8001"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

@@ -9,16 +9,17 @@ from jose import JWTError, jwt
 from pydantic import BaseModel
 
 KC_URL = os.getenv("KEYCLOAK_URL", "http://localhost:8081")
+KC_JWKS_HOST = os.getenv("KEYCLOAK_JWKS_URL", KC_URL)  # host interno para buscar las llaves
 REALM = os.getenv("KEYCLOAK_REALM", "cybersecurity")
 CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID", "fastapi-api")
 ISSUER = f"{KC_URL}/realms/{REALM}"
-JWKS_URL = f"{ISSUER}/protocol/openid-connect/certs"
+JWKS_URL = f"{KC_JWKS_HOST}/realms/{REALM}/protocol/openid-connect/certs"
 
 app = FastAPI(title="Dashboard API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:5173", "http://localhost:8090"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
