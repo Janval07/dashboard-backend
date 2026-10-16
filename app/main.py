@@ -15,7 +15,16 @@ CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID", "fastapi-api")
 ISSUER = f"{KC_URL}/realms/{REALM}"
 JWKS_URL = f"{KC_JWKS_HOST}/realms/{REALM}/protocol/openid-connect/certs"
 
-app = FastAPI(title="Dashboard API")
+# La documentacion interactiva (/docs, /redoc, /openapi.json) queda apagada por
+# defecto; solo se enciende en desarrollo con ENABLE_DOCS=true.
+ENABLE_DOCS = os.getenv("ENABLE_DOCS", "false").lower() == "true"
+
+app = FastAPI(
+    title="Dashboard API",
+    docs_url="/docs" if ENABLE_DOCS else None,
+    redoc_url="/redoc" if ENABLE_DOCS else None,
+    openapi_url="/openapi.json" if ENABLE_DOCS else None,
+)
 
 app.add_middleware(
     CORSMiddleware,
