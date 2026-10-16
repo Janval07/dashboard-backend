@@ -65,7 +65,6 @@ async def current_user(
     creds: Annotated[HTTPAuthorizationCredentials, Depends(bearer)],
 ):
     token = creds.credentials
-    print("Bearer token recibido:", token[:30], "...")
     try:
         async with httpx.AsyncClient() as client:
             r = await client.get(JWKS_URL, timeout=5)
